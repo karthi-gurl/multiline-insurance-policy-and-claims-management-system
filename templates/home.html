@@ -1,0 +1,9 @@
+{% extends "base.html" %}{% block title %}Home{% endblock %}{% block body %}
+<section class="hero"><div><h1>One desk for every policy and every claim.</h1>
+<p>Shieldline lets your team issue policies, track customers and settle claims across auto, health, life, home, travel and commercial cover.</p>
+<p><a class="btn" href="{{ url_for('dashboard' if session.user else 'login') }}">{{ 'Open dashboard' if session.user else 'Sign in to your workspace' }}</a></p></div></section>
+<section class="lines">
+<div><h3>Auto</h3>Collision, theft and third-party liability.</div><div><h3>Health</h3>Hospitalisation and day-care procedures.</div>
+<div><h3>Life</h3>Term and endowment cover for families.</div><div><h3>Home</h3>Structure and contents protection.</div>
+<div><h3>Travel</h3>Medical, baggage and trip cancellation.</div><div><h3>Commercial</h3>Property and liability for businesses.</div></section>
+<p class="foot">Demo project. Staff sign in with the credentials in the README.</p>{% endblock %}

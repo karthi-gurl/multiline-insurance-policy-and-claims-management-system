@@ -1,0 +1,12 @@
+{% extends "base.html" %}{% block title %}Policy{% endblock %}{% block body %}
+<h1>{{ 'Edit policy ' ~ p.policy_no if editing else 'Issue policy' }}</h1>
+<form method="post" class="card f">
+<div><label>Customer</label>{% if editing %}<input value="{{ p.name }}" disabled>{% else %}<select name="customer_id" required><option value="">Choose customer</option>
+{% for c in customers %}<option value="{{ c.id }}" {{ 'selected' if c.id|string==(p.customer_id|string) }}>{{ c.name }}</option>{% endfor %}</select>{% endif %}</div>
+<div><label>Line of business</label><select name="line">{% for l in LINES %}<option {{ 'selected' if l==p.line }}>{{ l }}</option>{% endfor %}</select></div>
+<div><label>Coverage amount (₹)</label><input type="number" min="1" name="coverage" value="{{ p.coverage }}" required></div>
+<div><label>Annual premium (₹)</label><input type="number" min="1" name="premium" value="{{ p.premium }}" required></div>
+<div><label>Start date</label><input type="date" name="start_date" value="{{ p.start_date }}" required></div><div><label>End date</label><input type="date" name="end_date" value="{{ p.end_date }}" required></div>
+{% if editing %}<div><label>Status</label><select name="status">{% for s in POLICY_STATUS %}<option {{ 'selected' if s==p.status }}>{{ s }}</option>{% endfor %}</select></div>{% endif %}
+<div class="full"><label>Notes</label><textarea name="notes" rows="3">{{ p.notes or '' }}</textarea></div>
+<div class="full"><button class="btn">Save policy</button> <a class="btn alt" href="{{ url_for('policies') }}">Cancel</a></div></form>{% endblock %}

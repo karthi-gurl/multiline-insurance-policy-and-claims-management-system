@@ -1,0 +1,8 @@
+{% extends "base.html" %}{% block title %}Customer{% endblock %}{% block body %}
+<h1>{{ 'Edit customer' if c and c.id else 'Add customer' }}</h1>
+<form method="post" class="card f">
+<div class="full"><label>Full name</label><input name="name" value="{{ c.name if c }}" required></div>
+<div><label>Email</label><input type="email" name="email" value="{{ c.email if c }}"></div><div><label>Phone</label><input name="phone" value="{{ c.phone if c }}"></div>
+<div><label>Date of birth</label><input type="date" name="dob" value="{{ c.dob if c }}"></div><div><label>City</label><input name="city" value="{{ c.city if c }}"></div>
+<div class="full"><label>Address</label><input name="address" value="{{ c.address if c }}"></div>
+<div class="full"><button class="btn">Save customer</button> <a class="btn alt" href="{{ url_for('customers') }}">Cancel</a></div></form>{% endblock %}

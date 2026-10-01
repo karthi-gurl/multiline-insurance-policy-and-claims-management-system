@@ -1,0 +1,6 @@
+{% extends "base.html" %}{% block title %}Sign in{% endblock %}{% block body %}
+<div class="login"><h1>Sign in</h1>
+<form method="post" class="card"><label for="u">Username</label><input id="u" name="username" required autofocus><br><br>
+<label for="p">Password</label><input id="p" name="password" type="password" required><br><br>
+<button class="btn">Sign in</button> <a class="btn alt" href="{{ url_for('home') }}">Back</a></form>
+<p class="foot" style="padding:0">Demo login: admin / admin123</p></div>{% endblock %}

@@ -1,0 +1,15 @@
+{% extends "base.html" %}{% block title %}Dashboard{% endblock %}{% block body %}
+<div class="bar"><h1>Dashboard</h1><div><a class="btn" href="{{ url_for('claim_add') }}">File claim</a> <a class="btn alt" href="{{ url_for('policy_add') }}">Issue policy</a></div></div>
+<div class="stats"><div class="stat"><b>{{ s.customers }}</b><span>Customers</span></div><div class="stat"><b>{{ s.active }}</b><span>Active policies</span></div>
+<div class="stat"><b>{{ s.premium|money }}</b><span>Annual premium</span></div><div class="stat"><b>{{ s.open }}</b><span>Open claims</span></div>
+<div class="stat"><b>{{ s.paid|money }}</b><span>Approved or paid out</span></div></div>
+<div class="grid2"><div class="card"><h3>Premium by line of business</h3>{% set top = by_line[0].prem if by_line else 1 %}
+{% for r in by_line %}<p style="margin:.6rem 0 .2rem">{{ r.line }}: {{ r.prem|money }} across {{ r.n }} {{ 'policy' if r.n==1 else 'policies' }}</p><div class="meter"><i style="width:{{ (r.prem/top*100)|round }}%"></i></div>
+{% else %}<p>No active policies yet.</p>{% endfor %}</div>
+<div class="card"><h3>Claims pipeline</h3><table>{% for st in CLAIM_STATUS %}<tr><td><span class="tag {{ st.split()[0] }}">{{ st }}</span></td><td>{{ by_status.get(st, 0) }}</td></tr>{% endfor %}</table></div></div>
+<div class="grid2"><div class="card"><h3>Latest claims</h3><table><tr><th>Claim</th><th>Customer</th><th>Amount</th><th>Status</th></tr>
+{% for c in recent %}<tr><td><a href="{{ url_for('claim_edit', cid=c.id) }}">{{ c.claim_no }}</a></td><td>{{ c.name }}</td><td>{{ c.amount|money }}</td><td><span class="tag {{ c.status.split()[0] }}">{{ c.status }}</span></td></tr>
+{% else %}<tr><td colspan="4">No claims filed.</td></tr>{% endfor %}</table></div>
+<div class="card"><h3>Renewals due in 60 days</h3><table><tr><th>Policy</th><th>Customer</th><th>Ends</th></tr>
+{% for p in expiring %}<tr><td><a href="{{ url_for('policy_edit', pid=p.id) }}">{{ p.policy_no }}</a></td><td>{{ p.name }}</td><td>{{ p.end_date }}</td></tr>
+{% else %}<tr><td colspan="3">Nothing due for renewal.</td></tr>{% endfor %}</table></div></div>{% endblock %}

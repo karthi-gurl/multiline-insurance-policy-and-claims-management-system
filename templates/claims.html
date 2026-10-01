@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block title %}Claims{% endblock %}{% block body %}
+<div class="bar"><h1>Claims</h1><a class="btn" href="{{ url_for('claim_add') }}">File claim</a></div>
+<form class="filters card"><select name="status"><option value="">All statuses</option>{% for s in CLAIM_STATUS %}<option {{ 'selected' if s==status }}>{{ s }}</option>{% endfor %}</select><button class="btn alt">Filter</button></form>
+<div class="card"><table><tr><th>Claim</th><th>Customer</th><th>Policy</th><th>Incident</th><th>Amount</th><th>Status</th><th></th></tr>
+{% for c in rows %}<tr><td>{{ c.claim_no }}</td><td>{{ c.name }}</td><td>{{ c.policy_no }} ({{ c.line }})</td><td>{{ c.incident_date }}</td><td>{{ c.amount|money }}</td>
+<td><span class="tag {{ c.status.split()[0] }}">{{ c.status }}</span></td><td><a class="btn alt sm" href="{{ url_for('claim_edit', cid=c.id) }}">Review</a></td></tr>
+{% else %}<tr><td colspan="7">No claims match this filter.</td></tr>{% endfor %}</table></div>{% endblock %}

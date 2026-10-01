@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block title %}Policies{% endblock %}{% block body %}
+<div class="bar"><h1>Policies</h1><a class="btn" href="{{ url_for('policy_add') }}">Issue policy</a></div>
+<form class="filters card"><select name="line"><option value="">All lines</option>{% for l in LINES %}<option {{ 'selected' if l==line }}>{{ l }}</option>{% endfor %}</select>
+<select name="status"><option value="">All statuses</option>{% for s in POLICY_STATUS %}<option {{ 'selected' if s==status }}>{{ s }}</option>{% endfor %}</select><button class="btn alt">Filter</button></form>
+<div class="card"><table><tr><th>Number</th><th>Customer</th><th>Line</th><th>Coverage</th><th>Premium</th><th>Period</th><th>Status</th><th></th></tr>
+{% for p in rows %}<tr><td>{{ p.policy_no }}</td><td><a href="{{ url_for('customer_view', cid=p.customer_id) }}">{{ p.name }}</a></td><td>{{ p.line }}</td><td>{{ p.coverage|money }}</td><td>{{ p.premium|money }}</td>
+<td>{{ p.start_date }} to {{ p.end_date }}</td><td><span class="tag {{ p.status }}">{{ p.status }}</span></td>
+<td><a class="btn alt sm" href="{{ url_for('policy_edit', pid=p.id) }}">Edit</a>
+<form method="post" action="{{ url_for('policy_delete', pid=p.id) }}" style="display:inline" onsubmit="return confirm('Delete {{ p.policy_no }}?')"><button class="btn danger sm">Delete</button></form></td></tr>
+{% else %}<tr><td colspan="8">No policies match these filters.</td></tr>{% endfor %}</table></div>{% endblock %}

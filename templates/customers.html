@@ -1,0 +1,7 @@
+{% extends "base.html" %}{% block title %}Customers{% endblock %}{% block body %}
+<div class="bar"><h1>Customers</h1><a class="btn" href="{{ url_for('customer_add') }}">Add customer</a></div>
+<form class="filters card"><input name="q" value="{{ term }}" placeholder="Search name, email or phone"><button class="btn alt">Search</button></form>
+<div class="card"><table><tr><th>Name</th><th>Contact</th><th>City</th><th>Policies</th><th></th></tr>
+{% for c in rows %}<tr><td><a href="{{ url_for('customer_view', cid=c.id) }}">{{ c.name }}</a></td><td>{{ c.email }}<br>{{ c.phone }}</td><td>{{ c.city }}</td><td>{{ c.pols }}</td>
+<td><a class="btn alt sm" href="{{ url_for('customer_edit', cid=c.id) }}">Edit</a></td></tr>
+{% else %}<tr><td colspan="5">No customers match. Add your first customer to begin.</td></tr>{% endfor %}</table></div>{% endblock %}

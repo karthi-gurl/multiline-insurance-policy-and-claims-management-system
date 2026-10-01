@@ -1,0 +1,11 @@
+{% extends "base.html" %}{% block title %}Claim{% endblock %}{% block body %}
+<h1>{{ 'Review claim ' ~ c.claim_no if editing else 'File a claim' }}</h1>
+<form method="post" class="card f">
+<div class="full"><label>Policy</label>{% if editing %}<input value="{{ c.policy_no }} ({{ c.line }}) - {{ c.name }}" disabled>{% else %}<select name="policy_id" required><option value="">Choose an active policy</option>
+{% for p in pols %}<option value="{{ p.id }}" {{ 'selected' if p.id|string==(c.policy_id|string) }}>{{ p.policy_no }} - {{ p.name }} ({{ p.line }}, cover {{ p.coverage|money }})</option>{% endfor %}</select>{% endif %}</div>
+<div><label>Incident date</label><input type="date" name="incident_date" value="{{ c.incident_date }}" required></div>
+<div><label>Claim amount (₹)</label><input type="number" min="1" name="amount" value="{{ c.amount }}" required></div>
+<div class="full"><label>What happened</label><textarea name="description" rows="4" required>{{ c.description or '' }}</textarea></div>
+{% if editing %}<div><label>Status</label><select name="status">{% for s in CLAIM_STATUS %}<option {{ 'selected' if s==c.status }}>{{ s }}</option>{% endfor %}</select></div>
+<div class="full"><label>Adjuster notes</label><textarea name="adjuster_notes" rows="3">{{ c.adjuster_notes or '' }}</textarea></div>{% endif %}
+<div class="full"><button class="btn">{{ 'Save changes' if editing else 'Submit claim' }}</button> <a class="btn alt" href="{{ url_for('claims') }}">Cancel</a></div></form>{% endblock %}

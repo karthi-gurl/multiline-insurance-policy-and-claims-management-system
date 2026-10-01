@@ -1,0 +1,10 @@
+{% extends "base.html" %}{% block title %}{{ c.name }}{% endblock %}{% block body %}
+<div class="bar"><h1>{{ c.name }}</h1><div><a class="btn" href="{{ url_for('policy_add', customer_id=c.id) }}">Issue policy</a> <a class="btn alt" href="{{ url_for('customer_edit', cid=c.id) }}">Edit customer</a></div></div>
+<div class="card"><p>{{ c.email }} | {{ c.phone }}<br>{{ c.address }}, {{ c.city }}<br>Born {{ c.dob or 'not recorded' }}</p></div>
+<div class="card"><h3>Policies</h3><table><tr><th>Number</th><th>Line</th><th>Coverage</th><th>Period</th><th>Status</th><th></th></tr>
+{% for p in pols %}<tr><td>{{ p.policy_no }}</td><td>{{ p.line }}</td><td>{{ p.coverage|money }}</td><td>{{ p.start_date }} to {{ p.end_date }}</td><td><span class="tag {{ p.status }}">{{ p.status }}</span></td>
+<td><a class="btn alt sm" href="{{ url_for('policy_edit', pid=p.id) }}">Edit</a>{% if p.status=='Active' %} <a class="btn alt sm" href="{{ url_for('claim_add', policy_id=p.id) }}">File claim</a>{% endif %}</td></tr>
+{% else %}<tr><td colspan="6">No policies yet.</td></tr>{% endfor %}</table></div>
+<div class="card"><h3>Claims</h3><table><tr><th>Claim</th><th>Policy</th><th>Amount</th><th>Status</th></tr>
+{% for k in claims %}<tr><td><a href="{{ url_for('claim_edit', cid=k.id) }}">{{ k.claim_no }}</a></td><td>{{ k.policy_no }} ({{ k.line }})</td><td>{{ k.amount|money }}</td><td><span class="tag {{ k.status.split()[0] }}">{{ k.status }}</span></td></tr>
+{% else %}<tr><td colspan="4">No claims on record.</td></tr>{% endfor %}</table></div>{% endblock %}
